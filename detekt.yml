@@ -1,0 +1,8 @@
+comments:
+  UndocumentedPublicClass:
+    active: true
+    searchInProtectedClass: true
+
+  UndocumentedPublicFunction:
+    active: true
+    searchProtectedFunction: true
