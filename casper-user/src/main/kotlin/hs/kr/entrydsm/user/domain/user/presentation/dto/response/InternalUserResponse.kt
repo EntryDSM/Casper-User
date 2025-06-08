@@ -1,0 +1,13 @@
+package hs.kr.entrydsm.user.domain.user.presentation.dto.response
+
+import hs.kr.entrydsm.user.domain.user.domain.UserRole
+import java.util.UUID
+
+data class InternalUserResponse(
+    val id: UUID,
+    val phoneNumber: String,
+    val name: String,
+    val isParent: Boolean,
+    val receiptCode: Long?,
+    val role: UserRole,
+)
