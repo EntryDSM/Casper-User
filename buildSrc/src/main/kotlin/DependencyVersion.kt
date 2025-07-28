@@ -12,4 +12,9 @@ object DependencyVersion {
     const val GRPC = "1.61.1"
     const val GRPC_KOTLIN = "1.4.1"
     const val PROTOBUF = "3.25.3"
+    const val GRPC_SPRING_BOOT_STARTER = "3.1.0.RELEASE"
+
+    const val SWAGGER = "2.7.0"
+
+    const val SENTRY = "7.14.0"
 }

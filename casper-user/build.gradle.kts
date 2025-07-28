@@ -11,10 +11,6 @@ plugins {
     id(Plugin.PROTOBUF) version PluginVersion.PROTOBUF_VERSION
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     // 스프링 부트 기본 기능
     implementation(Dependencies.SPRING_BOOT_STARTER)
@@ -57,15 +53,24 @@ dependencies {
     implementation(Dependencies.MAPSTRUCT)
     kapt(Dependencies.MAPSTRUCT_PROCESSOR)
 
-    //grpc
+    // grpc
     implementation(Dependencies.GRPC_NETTY_SHADED)
     implementation(Dependencies.GRPC_PROTOBUF)
     implementation(Dependencies.GRPC_STUB)
     implementation(Dependencies.GRPC_KOTLIN_STUB)
     implementation(Dependencies.PROTOBUF_KOTLIN)
+    implementation(Dependencies.GRPC_SERVER_SPRING_BOOT_STARTER)
     testImplementation(Dependencies.GRPC_TESTING)
-}
 
+    // OkCert
+    implementation(files("$projectDir/${Dependencies.OKCERT_PATH}"))
+
+    // swagger
+    implementation(Dependencies.SWAGGER)
+
+    // Sentry
+    implementation(Dependencies.SENTRY_SPRING_BOOT_STARTER)
+}
 
 protobuf {
     protoc {
@@ -86,9 +91,11 @@ protobuf {
                 create("grpckt")
             }
         }
-
+    }
 }
 
+repositories {
+    mavenCentral()
 }
 
 kotlin {

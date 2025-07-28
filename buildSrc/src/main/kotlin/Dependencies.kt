@@ -38,4 +38,14 @@ object Dependencies {
     const val GRPC_KOTLIN_STUB = "io.grpc:grpc-kotlin-stub:${DependencyVersion.GRPC_KOTLIN}"
     const val PROTOBUF_KOTLIN = "com.google.protobuf:protobuf-kotlin:${DependencyVersion.PROTOBUF}"
     const val GRPC_TESTING = "io.grpc:grpc-testing:${DependencyVersion.GRPC}"
+    const val GRPC_SERVER_SPRING_BOOT_STARTER = "net.devh:grpc-server-spring-boot-starter:${DependencyVersion.GRPC_SPRING_BOOT_STARTER}"
+
+    //OkCert
+    const val OKCERT_PATH = "src/main/webapp/WEB-INF/lib/OkCert3-java1.5-2.3.1.jar"
+
+    //swagger
+    const val SWAGGER = "org.springdoc:springdoc-openapi-starter-webmvc-ui:${DependencyVersion.SWAGGER}"
+
+    // Sentry
+    const val SENTRY_SPRING_BOOT_STARTER = "io.sentry:sentry-spring-boot-starter-jakarta:${DependencyVersion.SENTRY}"
 }

@@ -22,7 +22,7 @@ message GetUserInfoResponse{
 }
 
 enum UserRole {
-  UNSPECIFIED = 0;  // protobuf에서 필수 (0번 값)
+  UNSPECIFIED = 0;
   ROOT = 1;
   USER = 2;
   ADMIN = 3;

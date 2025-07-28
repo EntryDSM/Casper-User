@@ -9,12 +9,21 @@ import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.stereotype.Component
 
+/**
+ * 보안 필터 체인을 설정하는 클래스입니다.
+ */
 @Component
 class FilterConfig(
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
+    /**
+     * 보안 필터를 설정합니다.
+     * JWT 필터와 전역 예외 필터를 Spring Security 필터 체인에 추가합니다.
+     *
+     * @param http HTTP 보안 설정 객체
+     */
     override fun configure(http: HttpSecurity) {
-        val jwtFilter = JwtFilter() 
+        val jwtFilter = JwtFilter()
         val globalExceptionFilter = GlobalExceptionFilter(objectMapper)
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)

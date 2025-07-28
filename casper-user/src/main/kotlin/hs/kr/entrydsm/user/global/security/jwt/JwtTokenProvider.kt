@@ -1,9 +1,8 @@
 package hs.kr.entrydsm.user.global.security.jwt
 
-import hs.kr.entrydsm.user.domain.refreshtoken.domain.RefreshToken
-import hs.kr.entrydsm.user.domain.refreshtoken.domain.repository.RefreshTokenRepository
-import hs.kr.entrydsm.user.domain.user.domain.UserRole
-import hs.kr.entrydsm.user.domain.user.domain.repository.UserRepository
+import hs.kr.entrydsm.user.domain.refreshtoken.adapter.out.RefreshToken
+import hs.kr.entrydsm.user.domain.refreshtoken.adapter.out.repository.RefreshTokenRepository
+import hs.kr.entrydsm.user.domain.user.adapter.out.domain.UserRole
 import hs.kr.entrydsm.user.global.exception.ExpiredTokenException
 import hs.kr.entrydsm.user.global.exception.InvalidTokenException
 import hs.kr.entrydsm.user.global.security.auth.AdminDetailsService
@@ -15,20 +14,30 @@ import io.jsonwebtoken.Jws
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.security.Keys
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
+import java.nio.charset.StandardCharsets
 import java.util.Date
-import javax.servlet.http.HttpServletRequest
-import kotlin.text.get
+import javax.crypto.SecretKey
 
+/**
+ * JWT 토큰의 생성, 검증, 파싱을 담당하는 클래스입니다.
+ * 액세스 토큰과 리프레시 토큰을 관리하며, 토큰 기반 인증을 처리합니다.
+ *
+ * @property jwtProperties JWT 관련 설정 프로퍼티
+ * @property authDetailsService 사용자 상세 정보 서비스
+ * @property refreshTokenRepository 리프레시 토큰 저장소
+ * @property adminDetailsService 관리자 상세 정보 서비스
+ */
 @Component
 class JwtTokenProvider(
     private val jwtProperties: JwtProperties,
     private val authDetailsService: AuthDetailsService,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val userRepository: UserRepository,
     private val adminDetailsService: AdminDetailsService,
 ) {
     companion object {
@@ -36,14 +45,35 @@ class JwtTokenProvider(
         private const val REFRESH_KEY = "refresh_token"
     }
 
+    private val secretKey: SecretKey by lazy {
+        Keys.hmacShaKeyFor(jwtProperties.secretKey.toByteArray(StandardCharsets.UTF_8))
+    }
+
+    /**
+     * 토큰에서 클레임을 추출합니다.
+     *
+     * @param token 파싱할 JWT 토큰
+     * @return 토큰의 클레임 정보
+     * @throws InvalidTokenException 토큰이 유효하지 않은 경우
+     */
     private fun getBody(token: String): Claims {
         return try {
-            Jwts.parser().setSigningKey(jwtProperties.secretKey).parseClaimsJws(token).body
+            Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token).body
         } catch (e: JwtException) {
             throw InvalidTokenException
         }
     }
 
+    /**
+     * 토큰에서 만료 시간을 확인하고 subject를 반환합니다.
+     *
+     * @param token 확인할 JWT 토큰
+     * @return 토큰의 subject (사용자 ID)
+     * @throws ExpiredTokenException 토큰이 만료된 경우
+     */
     fun getSubjectWithExpiredCheck(token: String): String {
         val body = getBody(token)
         return if (body.expiration.before(Date())) {
@@ -53,6 +83,13 @@ class JwtTokenProvider(
         }
     }
 
+    /**
+     * 리프레시 토큰을 이용하여 새로운 토큰을 발급합니다.
+     *
+     * @param refreshToken 기존 리프레시 토큰
+     * @return 새로 발급된 토큰 응답
+     * @throws InvalidTokenException 토큰이 유효하지 않은 경우
+     */
     fun reIssue(refreshToken: String): TokenResponse {
         if (!isRefreshToken(refreshToken)) {
             throw InvalidTokenException
@@ -69,6 +106,13 @@ class JwtTokenProvider(
             } ?: throw InvalidTokenException
     }
 
+    /**
+     * 액세스 토큰과 리프레시 토큰을 생성합니다.
+     *
+     * @param userId 사용자 ID
+     * @param role 사용자 역할
+     * @return 생성된 토큰 응답
+     */
     fun generateToken(
         userId: String,
         role: String,
@@ -81,6 +125,15 @@ class JwtTokenProvider(
         return TokenResponse(accessToken, refreshToken)
     }
 
+    /**
+     * 액세스 토큰을 생성합니다.
+     *
+     * @param id 사용자 ID
+     * @param role 사용자 역할
+     * @param type 토큰 타입
+     * @param exp 만료 시간 (초)
+     * @return 생성된 액세스 토큰
+     */
     private fun generateAccessToken(
         id: String,
         role: String,
@@ -91,11 +144,19 @@ class JwtTokenProvider(
             .setSubject(id)
             .setHeaderParam("typ", type)
             .claim("role", role)
-            .signWith(SignatureAlgorithm.HS256, jwtProperties.secretKey)
+            .signWith(secretKey, SignatureAlgorithm.HS256)
             .setExpiration(Date(System.currentTimeMillis() + exp * 1000))
             .setIssuedAt(Date())
             .compact()
 
+    /**
+     * 리프레시 토큰을 생성합니다.
+     *
+     * @param role 사용자 역할
+     * @param type 토큰 타입
+     * @param exp 만료 시간 (초)
+     * @return 생성된 리프레시 토큰
+     */
     private fun generateRefreshToken(
         role: String,
         type: String,
@@ -104,11 +165,17 @@ class JwtTokenProvider(
         Jwts.builder()
             .setHeaderParam("typ", type)
             .claim("role", role)
-            .signWith(SignatureAlgorithm.HS256, jwtProperties.secretKey)
+            .signWith(secretKey, SignatureAlgorithm.HS256)
             .setExpiration(Date(System.currentTimeMillis() + exp * 1000))
             .setIssuedAt(Date())
             .compact()
 
+    /**
+     * HTTP 요청에서 토큰을 추출합니다.
+     *
+     * @param request HTTP 요청 객체
+     * @return 추출된 토큰 (없으면 null)
+     */
     fun resolveToken(request: HttpServletRequest): String? =
         request.getHeader(jwtProperties.header)?.also {
             if (it.startsWith(jwtProperties.prefix)) {
@@ -116,6 +183,13 @@ class JwtTokenProvider(
             }
         }
 
+    /**
+     * 토큰으로부터 인증 객체를 생성합니다.
+     *
+     * @param token JWT 토큰
+     * @return Spring Security 인증 객체
+     * @throws InvalidTokenException 토큰이 유효하지 않은 경우
+     */
     fun authentication(token: String): Authentication? {
         val body: Claims = getJws(token).body
         if (!isRefreshToken(token)) throw InvalidTokenException
@@ -123,9 +197,20 @@ class JwtTokenProvider(
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
 
+    /**
+     * 토큰을 파싱하여 JWS 객체를 반환합니다.
+     *
+     * @param token 파싱할 JWT 토큰
+     * @return 파싱된 JWS 객체
+     * @throws ExpiredTokenException 토큰이 만료된 경우
+     * @throws InvalidTokenException 토큰이 유효하지 않은 경우
+     */
     private fun getJws(token: String): Jws<Claims> {
         return try {
-            Jwts.parser().setSigningKey(jwtProperties.secretKey).parseClaimsJws(token)
+            Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
         } catch (e: ExpiredJwtException) {
             throw ExpiredTokenException
         } catch (e: Exception) {
@@ -133,12 +218,30 @@ class JwtTokenProvider(
         }
     }
 
+    /**
+     * 토큰이 리프레시 토큰인지 확인합니다.
+     *
+     * @param token 확인할 토큰
+     * @return 리프레시 토큰 여부
+     */
     private fun isRefreshToken(token: String?): Boolean {
         return REFRESH_KEY == getJws(token!!).header["typ"].toString()
     }
 
+    /**
+     * 토큰에서 역할 정보를 추출합니다.
+     *
+     * @param token JWT 토큰
+     * @return 사용자 역할
+     */
     fun getRole(token: String) = getJws(token).body["role"].toString()
 
+    /**
+     * 클레임에서 사용자 상세 정보를 조회합니다.
+     *
+     * @param body 토큰의 클레임 정보
+     * @return 사용자 상세 정보
+     */
     private fun getDetails(body: Claims): UserDetails {
         return if (UserRole.USER.toString() == body["role"].toString()) {
             authDetailsService.loadUserByUsername(body.subject)

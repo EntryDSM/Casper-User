@@ -9,16 +9,28 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 
+/**
+ * Spring Security 설정 클래스입니다.
+ * 애플리케이션의 보안 정책과 인증/인가 규칙을 정의합니다.
+ *
+ * @property objectMapper JSON 직렬화/역직렬화를 위한 ObjectMapper
+ */
 @Configuration
 class SecurityConfig(
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) {
-
+    /**
+     * Spring Security 필터 체인을 구성합니다.
+     * HTTP 보안 설정 및 경로별 접근 권한을 정의합니다.
+     *
+     * @param http HttpSecurity 객체
+     * @return 구성된 SecurityFilterChain
+     */
     @Bean
     protected fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf { it.disable() }
-            .cors { } // 필요 시 CORS 설정 추가
+            .cors { it.disable() }
             .formLogin { it.disable() }
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -39,12 +51,16 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.GET, "/admin/").hasRole("ROOT")
                     .anyRequest().authenticated()
             }
-
             .with(FilterConfig(objectMapper)) { }
 
         return http.build()
     }
 
+    /**
+     * 비밀번호 암호화를 위한 BCrypt 인코더를 설정합니다.
+     *
+     * @return BCryptPasswordEncoder 인스턴스
+     */
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()
 }
