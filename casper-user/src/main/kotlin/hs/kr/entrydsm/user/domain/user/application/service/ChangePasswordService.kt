@@ -37,7 +37,9 @@ class ChangePasswordService(
      */
     @Transactional
     override fun changePassword(request: ChangePasswordRequest) {
-        if (!passInfoRepository.existsByPhoneNumber(request.phoneNumber)) {
+        val phoneNumberHash = HashUtil.sha256(request.phoneNumber)
+
+        if (!passInfoRepository.existsById(phoneNumberHash)) {
             throw PassInfoNotFoundException
         }
 

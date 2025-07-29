@@ -48,9 +48,10 @@ class QueryPassInfoService(
 
         val passInfo =
             PassInfo(
-                encryptionUtil.encrypt(name),
+                HashUtil.sha256(phoneNumber)
                 encryptionUtil.encrypt(phoneNumber),
-                exp,
+                encryptionUtil.encrypt(name),
+                exp
             )
 
         passInfoRepository.save(passInfo)

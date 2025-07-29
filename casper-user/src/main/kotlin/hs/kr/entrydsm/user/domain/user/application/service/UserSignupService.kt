@@ -56,7 +56,7 @@ class UserSignupService(
         }
 
         val passInfo =
-            passInfoRepository.findByPhoneNumber(phoneNumber)
+            passInfoRepository.findById(phoneNumberHash)
                 .orElseThrow { PassInfoNotFoundException }
 
         val user =
