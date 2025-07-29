@@ -30,16 +30,8 @@ class UserGrpcService(
      * @throws StatusException UUID 형식이 잘못되었거나 서버 오류가 발생한 경우
      */
     override suspend fun getUserInfoByUserId(request: UserServiceProto.GetUserInfoRequest): UserServiceProto.GetUserInfoResponse {
-
-        return try {
-            val userId = UUID.fromString(request.userId)
-            val userInfo = queryUserByUUIDUseCase.getUserById(userId)
-            userGrpcMapper.toGetUserInfoResponse(userInfo)
-        } catch (e: IllegalArgumentException) {
-            throw StatusException(Status.INVALID_ARGUMENT.withDescription("Invalid UUID format"))
-        } catch (e: Exception) {
-            throw StatusException(Status.INTERNAL.withDescription("서버 오류"))
-        }
+        val userId = UUID.fromString(request.userId)
+        val userInfo = queryUserByUUIDUseCase.getUserById(userId)
+        return userGrpcMapper.toGetUserInfoResponse(userInfo)
     }
-
 }
