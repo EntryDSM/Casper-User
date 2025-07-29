@@ -10,7 +10,7 @@ import org.mapstruct.Mapping
  * User 도메인 모델과 UserJpaEntity 간의 변환을 담당하는 매퍼 클래스입니다.
  * MapStruct를 사용하여 도메인 계층과 인프라스트럭처 계층 간의 데이터 변환을 처리합니다.
  */
-@Mapper
+@Mapper(componentModel = "spring")
 abstract class UserMapper : GenericMapper<UserJpaEntity, User> {
 
     @Mapping(target = "changePassword", ignore = true)
