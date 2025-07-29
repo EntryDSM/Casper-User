@@ -9,5 +9,4 @@ import org.springframework.scheduling.annotation.EnableScheduling
  */
 @Configuration
 @EnableScheduling
-class EnableScheduling(){
-}
+class EnableScheduling
