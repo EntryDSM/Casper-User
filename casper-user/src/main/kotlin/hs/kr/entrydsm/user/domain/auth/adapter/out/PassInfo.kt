@@ -16,8 +16,8 @@ import org.springframework.data.redis.core.index.Indexed
 @RedisHash
 class PassInfo(
     @Id
+    val phoneNumberHash: String,
     val phoneNumber: String,
-    @Indexed
     val name: String,
     @TimeToLive
     val ttl: Long
