@@ -29,10 +29,10 @@ class RefreshToken(
      * @param ttl 새로운 만료 시간 (초)
      */
     fun update(
-        token: String?,
+        token: String,
         ttl: Long,
     ) {
-        this.token = token!!
+        this.token = token
         this.ttl = ttl
     }
 }
