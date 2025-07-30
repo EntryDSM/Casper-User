@@ -19,6 +19,7 @@ class PassPopupService(
 ) : PassPopupUseCase {
     companion object {
         private const val TARGET = "PROD"
+        private val logger = LoggerFactory.getLogger(PassPopupService::class.java)
     }
 
     @Value("\${pass.site-name}")
@@ -106,7 +107,7 @@ class PassPopupService(
 
             return htmlBuilder.toString()
         } catch (e: Exception) {
-            println(e.message)
+            logger.error("Pass popup 생성 중 오류 발생: ${e.message}", e)
             throw InternalServerErrorException
         }
     }
