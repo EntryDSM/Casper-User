@@ -48,7 +48,7 @@ class QueryPassInfoService(
 
         val passInfo =
             PassInfo(
-                HashUtil.sha256(phoneNumber)
+                HashUtil.sha256(phoneNumber),
                 encryptionUtil.encrypt(phoneNumber),
                 encryptionUtil.encrypt(name),
                 exp
