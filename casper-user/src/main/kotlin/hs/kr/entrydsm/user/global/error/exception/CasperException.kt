@@ -8,6 +8,6 @@ import java.lang.RuntimeException
  *
  * @property errorCode 발생한 오류의 에러 코드
  */
-abstract class EquusException(
+abstract class CasperException(
     val errorCode: ErrorCode,
 ) : RuntimeException()
