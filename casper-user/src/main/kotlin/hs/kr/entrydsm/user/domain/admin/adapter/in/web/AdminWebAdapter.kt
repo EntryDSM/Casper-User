@@ -24,7 +24,7 @@ import java.util.UUID
  */
 @RestController
 @RequestMapping("/admin")
-class AdminController(
+class AdminWebAdapter(
     private val adminLoginUseCase: AdminLoginUseCase,
     private val adminTokenRefreshUseCase: AdminTokenRefreshUseCase,
     private val deleteAllTableUseCase: DeleteAllTableUseCase,
