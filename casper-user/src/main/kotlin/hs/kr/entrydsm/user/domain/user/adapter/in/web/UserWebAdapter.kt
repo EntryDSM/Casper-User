@@ -47,7 +47,7 @@ import java.util.UUID
  */
 @RequestMapping("/user")
 @RestController
-class UserController(
+class UserWebAdapter(
     private val userSignupUseCase: UserSignupUseCase,
     private val userLoginUseCase: UserLoginUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase,
