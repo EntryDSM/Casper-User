@@ -1,0 +1,5 @@
+root = true
+
+[*.kt]
+ktlint_standard_package-name = disabled
+ktlint_standard_filename = disabled
