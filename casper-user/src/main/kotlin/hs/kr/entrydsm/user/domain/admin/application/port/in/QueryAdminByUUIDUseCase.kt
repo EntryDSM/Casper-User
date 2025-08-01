@@ -1,6 +1,6 @@
 package hs.kr.entrydsm.user.domain.admin.application.port.`in`
 
-import hs.kr.entrydsm.user.domain.admin.adapter.`in`.web.dto.response.InternalAdminResponse
+import hs.kr.entrydsm.user.infrastructure.grpc.server.dto.InternalAdminResponse
 import java.util.UUID
 
 /**

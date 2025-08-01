@@ -1,4 +1,4 @@
-package hs.kr.entrydsm.user.domain.admin.adapter.`in`.web.dto.response
+package hs.kr.entrydsm.user.infrastructure.grpc.server.dto
 
 import java.util.UUID
 
