@@ -13,6 +13,13 @@ class AdminGrpcService(
     private val userGrpcMapper: UserGrpcMapper
 ) : AdminServiceGrpcKt.AdminServiceCoroutineImplBase() {
 
+    /**
+     * 어드민 ID로 어드민 ID를 조회합니다.
+     *
+     * @param request 어드민 ID가 포함된 gRPC 요청
+     * @return 어드민 ID gRPC 응답
+     * @throws AdminNotFoundException admin을 찾을 수 없을 때
+     */
     override suspend fun getAdminByUUID(request: AdminServiceProto.GetAdminIdRequest): AdminServiceProto.GetAdminIdResponse {
         val adminId = UUID.fromString(request.adminId)
         val currentAdminId = queryAdminByUUIDUseCase.queryByUUID(adminId)
