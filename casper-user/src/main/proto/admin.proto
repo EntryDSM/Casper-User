@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package casper.user;
+
+option java_package = "hs.kr.entrydsm.casper.admin.proto";
+option java_outer_classname = "AdminServiceProto";
+
+service AdminService {
+  rpc GetAdminByUUID(GetAdminIdRequest) returns (GetAdminIdResponse);
+}
+
+message GetAdminIdRequest {
+  string admin_id =1;
+}
+
+message GetAdminIdResponse{
+  string admin_id = 1;
+}
