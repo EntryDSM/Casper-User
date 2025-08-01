@@ -12,11 +12,8 @@ import org.mapstruct.Mapping
  */
 @Mapper(componentModel = "spring")
 abstract class UserMapper : GenericMapper<UserJpaEntity, User> {
-
-    @Mapping(target = "changePassword", ignore = true)
-    @Mapping(target = "changeReceiptCode", ignore = true)
+    
     abstract override fun toEntity(model: User): UserJpaEntity
-
     abstract override fun toModel(entity: UserJpaEntity?): User?
     abstract override fun toModelNotNull(entity: UserJpaEntity): User
 }

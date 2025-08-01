@@ -1,12 +1,11 @@
 package hs.kr.entrydsm.user.global.error
 
-import hs.kr.entrydsm.user.global.error.exception.EquusException
+import hs.kr.entrydsm.user.global.error.exception.CasperException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import kotlin.collections.get
 
 /**
  * 애플리케이션의 전역 예외 처리를 담당하는 클래스입니다.
@@ -20,8 +19,8 @@ class GlobalExceptionHandler {
      * @param e EquusException 인스턴스
      * @return 에러 코드에 따른 응답 엔티티
      */
-    @ExceptionHandler(EquusException::class)
-    fun handlingEquusException(e: EquusException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(CasperException::class)
+    fun handlingEquusException(e: CasperException): ResponseEntity<ErrorResponse> {
         val code = e.errorCode
         return ResponseEntity(
             ErrorResponse(code.status, code.message),

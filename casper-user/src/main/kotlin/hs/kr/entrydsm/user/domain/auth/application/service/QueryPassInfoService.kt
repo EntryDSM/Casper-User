@@ -6,6 +6,7 @@ import hs.kr.entrydsm.user.domain.auth.adapter.out.repository.PassInfoRepository
 import hs.kr.entrydsm.user.domain.auth.application.port.`in`.QueryPassInfoUseCase
 import hs.kr.entrydsm.user.domain.auth.exception.InvalidPassException
 import hs.kr.entrydsm.user.global.utils.encryption.EncryptionUtil
+import hs.kr.entrydsm.user.global.utils.encryption.HashUtil
 import hs.kr.entrydsm.user.global.utils.pass.PassUtil
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service

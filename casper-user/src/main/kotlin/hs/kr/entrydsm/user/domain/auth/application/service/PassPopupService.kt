@@ -6,6 +6,7 @@ import hs.kr.entrydsm.user.global.exception.InternalServerErrorException
 import hs.kr.entrydsm.user.global.utils.pass.RedirectUrlChecker
 import kcb.module.v3.OkCert
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

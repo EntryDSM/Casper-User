@@ -7,6 +7,7 @@ import hs.kr.entrydsm.user.domain.user.application.port.`in`.ChangePasswordUseCa
 import hs.kr.entrydsm.user.domain.user.application.port.out.QueryUserPort
 import hs.kr.entrydsm.user.domain.user.application.port.out.SaveUserPort
 import hs.kr.entrydsm.user.domain.user.exception.UserNotFoundException
+import hs.kr.entrydsm.user.global.utils.encryption.HashUtil
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
