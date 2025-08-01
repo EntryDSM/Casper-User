@@ -1,7 +1,7 @@
 package hs.kr.entrydsm.user.global.error
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import hs.kr.entrydsm.user.global.error.exception.EquusException
+import hs.kr.entrydsm.user.global.error.exception.CasperException
 import hs.kr.entrydsm.user.global.error.exception.ErrorCode
 import io.sentry.Sentry
 import jakarta.servlet.FilterChain
@@ -36,7 +36,7 @@ class GlobalExceptionFilter(
     ) {
         try {
             filterChain.doFilter(request, response)
-        } catch (e: EquusException) {
+        } catch (e: CasperException) {
             Sentry.captureException(e)
             writerErrorCode(response, e.errorCode)
         } catch (e: Exception) {
