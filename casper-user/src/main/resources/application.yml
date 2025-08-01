@@ -1,0 +1,8 @@
+grpc:
+  server:
+    port: 9090
+    max-inbound-message-size: 3MB
+
+app:
+  encryption:
+    key: "@qkrwndnjs12"

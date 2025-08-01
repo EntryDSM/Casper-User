@@ -1,0 +1,52 @@
+package hs.kr.entrydsm.user.global.security.auth
+
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+
+/**
+ * Spring Security 인증을 위한 사용자 상세 정보를 담는 클래스입니다.
+ *
+ * @property userId 사용자 ID
+ */
+class AuthDetails(
+    private val userId: String,
+) : UserDetails {
+    /**
+     * 상수 정의
+     */
+    companion object {
+        /**
+         * 기본 사용자 역할
+         */
+        private val ROLE_USER = "ROLE_USER"
+    }
+
+    override fun getAuthorities(): Collection<GrantedAuthority?> {
+        return listOf<SimpleGrantedAuthority>(SimpleGrantedAuthority(ROLE_USER))
+    }
+
+    override fun getPassword(): String? {
+        return null
+    }
+
+    override fun getUsername(): String? {
+        return userId
+    }
+
+    override fun isAccountNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isAccountNonLocked(): Boolean {
+        return true
+    }
+
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isEnabled(): Boolean {
+        return true
+    }
+}
