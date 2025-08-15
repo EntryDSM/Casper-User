@@ -11,6 +11,12 @@ plugins {
     id(Plugin.PROTOBUF) version PluginVersion.PROTOBUF_VERSION
 }
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${DependencyVersion.SPRING_CLOUD}")
+    }
+}
+
 dependencies {
     // 스프링 부트 기본 기능
     implementation(Dependencies.SPRING_BOOT_STARTER)
@@ -70,6 +76,9 @@ dependencies {
 
     // Sentry
     implementation(Dependencies.SENTRY_SPRING_BOOT_STARTER)
+
+    // Spring Cloud Config
+    implementation(Dependencies.SPRING_CLOUD_STARTER_CONFIG)
 }
 
 protobuf {

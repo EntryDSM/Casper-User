@@ -48,4 +48,7 @@ object Dependencies {
 
     // Sentry
     const val SENTRY_SPRING_BOOT_STARTER = "io.sentry:sentry-spring-boot-starter-jakarta:${DependencyVersion.SENTRY}"
+
+    // Spring Cloud Config
+    const val SPRING_CLOUD_STARTER_CONFIG = "org.springframework.cloud:spring-cloud-starter-config"
 }
