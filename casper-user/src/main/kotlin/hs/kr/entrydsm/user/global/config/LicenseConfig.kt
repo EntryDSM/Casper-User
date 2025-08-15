@@ -7,6 +7,7 @@ import java.io.IOException
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 
 /**
  * 패스 인증 라이센스 파일을 다운로드하고 설정하는 클래스입니다.
@@ -18,13 +19,14 @@ class LicenseConfig(
 ) {
     /**
      * 애플리케이션 시작 시 라이센스 파일을 다운로드합니다.
+     * 기존 파일이 있어도 최신 버전으로 덮어씁니다.
      */
     @PostConstruct
     fun initialize() {
         try {
             URL(licenseFileURl).openStream()
                 .use { inputStream ->
-                    Files.copy(inputStream, Paths.get(PATH))
+                    Files.copy(inputStream, Paths.get(PATH), StandardCopyOption.REPLACE_EXISTING)
                 }
         } catch (e: IOException) {
             e.printStackTrace()
