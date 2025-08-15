@@ -1,8 +1,22 @@
-grpc:
-  server:
-    port: 9090
-    max-inbound-message-size: 3MB
+spring:
+  application:
+    name: Casper-User
+  config:
+    import: "configserver:${CONFIG_SERVER_URL}"
+  cloud:
+    config:
+      label: main
+      fail-fast: true
+      retry:
+        initial-interval: 1000
+        max-attempts: 6
+        max-interval: 2000
+        multiplier: 1.1
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
 
-app:
-  encryption:
-    key: "@qkrwndnjs12"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh
