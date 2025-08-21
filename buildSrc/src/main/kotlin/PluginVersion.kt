@@ -5,4 +5,5 @@ object PluginVersion {
     const val DETEKT_VERSION = "1.23.6"
     const val KTLINT_VERSION = "12.1.1"
     const val PROTOBUF_VERSION = "0.9.4"
+    const val OSDETECTOR_VERSION = "1.7.3"
 }

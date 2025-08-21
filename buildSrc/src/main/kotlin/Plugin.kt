@@ -8,4 +8,5 @@ object Plugin {
     const val KTLINT = "org.jlleitschuh.gradle.ktlint"
     const val CASPER_DOCUMENTATION = "casper.documentation-convention"
     const val PROTOBUF = "com.google.protobuf"
+    const val OSDETECTOR = "com.google.osdetector"
 }

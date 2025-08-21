@@ -9,6 +9,7 @@ plugins {
     id(Plugin.SPRING_DEPENDENCY_MANAGEMENT) version PluginVersion.SPRING_DEPENDENCY_MANAGEMENT_VERSION
     id(Plugin.CASPER_DOCUMENTATION)
     id(Plugin.PROTOBUF) version PluginVersion.PROTOBUF_VERSION
+    id(Plugin.OSDETECTOR) version PluginVersion.OSDETECTOR_VERSION
 }
 
 dependencyManagement {
@@ -87,7 +88,7 @@ protobuf {
     }
     plugins {
         create("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:${DependencyVersion.GRPC}"
+            artifact = "io.grpc:protoc-gen-grpc-java:${DependencyVersion.GRPC}:${osdetector.classifier}"
         }
         create("grpckt") {
             artifact = "io.grpc:protoc-gen-grpc-kotlin:${DependencyVersion.GRPC_KOTLIN}:jdk8@jar"
@@ -102,6 +103,7 @@ protobuf {
         }
     }
 }
+
 
 repositories {
     mavenCentral()
