@@ -29,7 +29,7 @@ WORKDIR /app
 
 ENV TZ=Asia/Seoul JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:+UseG1GC -XX:G1HeapRegionSize=16m -XX:+UseStringDeduplication -XX:-UsePerfData"
 
-COPY --from=build --chown=appuser:appgroup /app/casper-status/build/libs/casper-status-0.0.1.jar /tmp/libs/
+COPY --from=build --chown=appuser:appgroup /app/casper-user/build/libs/casper-user-0.0.1.jar /tmp/libs/
 
 RUN find /tmp/libs -name "*.jar" ! -name "*-plain.jar" -exec cp {} /app/app.jar \; && rm -rf /tmp/libs && chown appuser:appgroup /app/app.jar
 
