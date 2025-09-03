@@ -82,6 +82,14 @@ class UserPersistenceAdapter(
     }
 
     /**
+     * 모든 사용자를 삭제합니다.
+     * 관리자의 전체 데이터 초기화 시에만 사용됩니다.
+     */
+    override fun deleteAll() {
+        userRepository.deleteAll()
+    }
+
+    /**
      * 지정된 일수보다 오래된 탈퇴 사용자를 조회합니다.
      *
      * @param days 기준 일수
