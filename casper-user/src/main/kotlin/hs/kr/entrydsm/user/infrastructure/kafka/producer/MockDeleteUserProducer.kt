@@ -1,16 +1,16 @@
 package hs.kr.entrydsm.user.infrastructure.kafka.producer
 
+import hs.kr.entrydsm.user.infrastructure.kafka.configuration.KafkaTopics
 import org.springframework.context.annotation.Profile
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 
-/**
- * Kafka가 도입되기 전까지 사용할 임시 Mock Producer입니다.
- */
+
 @Component
-@Profile("!kafka")
-class MockDeleteUserProducer : DeleteUserProducer {
+class MockDeleteUserProducer(
+    private val kafkaTemplate: KafkaTemplate<String, Long>
+) : DeleteUserProducer {
     override fun send(receiptCode: Long) {
-        // TODO: Kafka 도입 후 실제 구현체로 교체
-        println("Mock: DeleteUser event sent for receiptCode: $receiptCode (Kafka not available)")
+        kafkaTemplate.send(KafkaTopics.DELETE_USER, receiptCode)
     }
 }
