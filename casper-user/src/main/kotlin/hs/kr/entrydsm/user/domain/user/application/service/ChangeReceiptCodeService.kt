@@ -5,8 +5,11 @@ import hs.kr.entrydsm.user.domain.user.application.port.out.QueryUserPort
 import hs.kr.entrydsm.user.domain.user.application.port.out.SaveUserPort
 import hs.kr.entrydsm.user.domain.user.exception.UserNotFoundException
 import hs.kr.entrydsm.user.infrastructure.kafka.producer.UserEventProducer
+import jakarta.transaction.Synchronization
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.util.UUID
 
 /**
@@ -50,8 +53,12 @@ class ChangeReceiptCodeService(
             val updatedUser = user.copy(receiptCode = receiptCode)
             saveUserPort.save(updatedUser)
 
-            // 성공 이벤트 발행
-            userEventProducer.sendReceiptCodeUpdateCompleted(receiptCode, userId)
+            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+                override fun afterCommit() {
+                    userEventProducer.sendReceiptCodeUpdateCompleted(receiptCode, userId)
+                }
+            })
+
             
         } catch (e: Exception) {
 
