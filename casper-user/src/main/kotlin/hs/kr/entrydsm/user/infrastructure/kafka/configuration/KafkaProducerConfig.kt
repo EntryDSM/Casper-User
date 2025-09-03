@@ -33,6 +33,16 @@ class KafkaProducerConfig(
         return KafkaTemplate(deleteUserProducerFactory())
     }
 
+    @Bean
+    fun userEventProducerFactory(): DefaultKafkaProducerFactory<String, Any> {
+        return DefaultKafkaProducerFactory(producerConfig())
+    }
+
+    @Bean
+    fun userEventKafkaTemplate(): KafkaTemplate<String, Any> {
+        return KafkaTemplate(userEventProducerFactory())
+    }
+
 
     private fun producerConfig(): Map<String, Any> {
         return mapOf(
