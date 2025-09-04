@@ -4,8 +4,12 @@ import hs.kr.entrydsm.user.domain.user.application.port.`in`.ChangeReceiptCodeUs
 import hs.kr.entrydsm.user.domain.user.application.port.out.QueryUserPort
 import hs.kr.entrydsm.user.domain.user.application.port.out.SaveUserPort
 import hs.kr.entrydsm.user.domain.user.exception.UserNotFoundException
+import hs.kr.entrydsm.user.infrastructure.kafka.producer.UserEventProducer
+import jakarta.transaction.Synchronization
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.util.UUID
 
 /**
@@ -14,12 +18,13 @@ import java.util.UUID
  *
  * @property queryUserPort 사용자 조회 포트
  * @property saveUserPort 사용자 저장 포트
+ * @property userEventProducer 사용자 이벤트 발행기
  */
-@Transactional
 @Service
 class ChangeReceiptCodeService(
     private val queryUserPort: QueryUserPort,
     private val saveUserPort: SaveUserPort,
+    private val userEventProducer: UserEventProducer
 ) : ChangeReceiptCodeUseCase {
     /**
      * 사용자의 접수코드를 변경합니다.
@@ -28,12 +33,43 @@ class ChangeReceiptCodeService(
      * @param receiptCode 새로운 접수코드
      * @throws UserNotFoundException 사용자가 존재하지 않는 경우
      */
+    @Transactional
     override fun changeReceiptCode(
         userId: UUID,
         receiptCode: Long,
     ) {
-        val user = queryUserPort.findById(userId) ?: throw UserNotFoundException
-        val updateUser = user.changeReceiptCode(receiptCode)
-        saveUserPort.save(updateUser)
+        try {
+            val user = queryUserPort.findById(userId)
+            
+            if (user == null) {
+                userEventProducer.sendReceiptCodeUpdateFailed(
+                    receiptCode = receiptCode,
+                    userId = userId,
+                    reason = "User not found"
+                )
+                throw UserNotFoundException
+            }
+
+            val updatedUser = user.copy(receiptCode = receiptCode)
+            saveUserPort.save(updatedUser)
+
+            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
+                override fun afterCommit() {
+                    userEventProducer.sendReceiptCodeUpdateCompleted(receiptCode, userId)
+                }
+            })
+
+            
+        } catch (e: Exception) {
+
+            if (e !is UserNotFoundException) {
+                userEventProducer.sendReceiptCodeUpdateFailed(
+                    receiptCode = receiptCode,
+                    userId = userId,
+                    reason = e.message ?: "Unknown error"
+                )
+            }
+            throw e  // 예외 다시 던져서 롤백 발생
+        }
     }
 }

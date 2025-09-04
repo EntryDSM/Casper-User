@@ -22,4 +22,10 @@ interface DeleteUserPort {
      * @return 삭제 대상 사용자 목록
      */
     fun findWithdrawnUsersOlderThan(days: Long): List<User>
+
+    /**
+     * 모든 사용자를 삭제합니다.
+     * 관리자의 전체 데이터 초기화 시에만 사용됩니다.
+     */
+    fun deleteAll()
 }
