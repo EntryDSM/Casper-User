@@ -83,7 +83,7 @@ dependencies {
     implementation(Dependencies.KAFKA)
 
     // Spring Cloud Config
-    //implementation(Dependencies.SPRING_CLOUD_STARTER_CONFIG)
+    implementation(Dependencies.SPRING_CLOUD_STARTER_CONFIG)
 }
 
 protobuf {
