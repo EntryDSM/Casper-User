@@ -37,6 +37,7 @@ object Dependencies {
     const val GRPC_STUB = "io.grpc:grpc-stub:${DependencyVersion.GRPC}"
     const val GRPC_KOTLIN_STUB = "io.grpc:grpc-kotlin-stub:${DependencyVersion.GRPC_KOTLIN}"
     const val PROTOBUF_KOTLIN = "com.google.protobuf:protobuf-kotlin:${DependencyVersion.PROTOBUF}"
+    const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${DependencyVersion.PROTOBUF}"
     const val GRPC_TESTING = "io.grpc:grpc-testing:${DependencyVersion.GRPC}"
     const val GRPC_SERVER_SPRING_BOOT_STARTER = "net.devh:grpc-server-spring-boot-starter:${DependencyVersion.GRPC_SPRING_BOOT_STARTER}"
 

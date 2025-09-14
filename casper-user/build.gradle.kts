@@ -67,6 +67,7 @@ dependencies {
     implementation(Dependencies.GRPC_STUB)
     implementation(Dependencies.GRPC_KOTLIN_STUB)
     implementation(Dependencies.PROTOBUF_KOTLIN)
+    implementation(Dependencies.PROTOBUF_JAVA)
     implementation(Dependencies.GRPC_SERVER_SPRING_BOOT_STARTER)
     testImplementation(Dependencies.GRPC_TESTING)
 
