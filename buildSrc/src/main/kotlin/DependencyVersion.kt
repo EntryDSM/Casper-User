@@ -18,5 +18,5 @@ object DependencyVersion {
 
     const val SENTRY = "7.14.0"
 
-    const val SPRING_CLOUD = "2023.0.3"
+    const val SPRING_CLOUD = "2024.0.2"
 }
