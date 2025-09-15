@@ -46,6 +46,7 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.POST, "/user/auth").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/user/auth").permitAll()
                     .requestMatchers(HttpMethod.POST, "/admin/auth").permitAll()
+                    .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers(HttpMethod.DELETE, "/admin/auth").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/user").hasRole("ROOT")
                     .requestMatchers(HttpMethod.GET, "/admin/").hasRole("ROOT")
