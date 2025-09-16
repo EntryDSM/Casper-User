@@ -1,9 +1,9 @@
 package hs.kr.entrydsm.user.domain.admin.application.service
 
-import hs.kr.entrydsm.user.infrastructure.grpc.server.dto.InternalAdminResponse
 import hs.kr.entrydsm.user.domain.admin.application.port.`in`.QueryAdminByUUIDUseCase
 import hs.kr.entrydsm.user.domain.admin.application.port.out.QueryAdminPort
 import hs.kr.entrydsm.user.domain.admin.exception.AdminNotFoundException
+import hs.kr.entrydsm.user.infrastructure.grpc.server.dto.InternalAdminResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID

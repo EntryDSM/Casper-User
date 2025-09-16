@@ -10,7 +10,6 @@ import org.mapstruct.Mapper
  */
 @Mapper(componentModel = "spring")
 abstract class AdminMapper : GenericMapper<AdminJpaEntity, Admin> {
-
     /**
      * 도메인 모델 [Admin]을 JPA 엔티티 [AdminJpaEntity]로 변환합니다.
      *

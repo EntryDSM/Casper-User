@@ -1,8 +1,8 @@
 package hs.kr.entrydsm.user.global.document.admin
 
 import hs.kr.entrydsm.user.domain.admin.adapter.`in`.web.dto.request.AdminLoginRequest
-import hs.kr.entrydsm.user.infrastructure.grpc.server.dto.InternalAdminResponse
 import hs.kr.entrydsm.user.global.utils.token.dto.TokenResponse
+import hs.kr.entrydsm.user.infrastructure.grpc.server.dto.InternalAdminResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content

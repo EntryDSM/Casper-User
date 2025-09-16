@@ -1,8 +1,8 @@
 package hs.kr.entrydsm.user.domain.user.adapter.out
 
 import hs.kr.entrydsm.user.domain.user.adapter.out.domain.UserRole
-import hs.kr.entrydsm.user.global.converter.EncryptedStringConverter
 import hs.kr.entrydsm.user.global.base.BaseUUIDEntity
+import hs.kr.entrydsm.user.global.converter.EncryptedStringConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity

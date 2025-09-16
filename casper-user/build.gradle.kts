@@ -80,7 +80,7 @@ dependencies {
     // Sentry
     implementation(Dependencies.SENTRY_SPRING_BOOT_STARTER)
 
-    //kafka
+    // kafka
     implementation(Dependencies.KAFKA)
 
     // Spring Cloud Config
@@ -108,7 +108,6 @@ protobuf {
         }
     }
 }
-
 
 repositories {
     mavenCentral()

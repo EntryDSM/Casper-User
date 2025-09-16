@@ -4,7 +4,6 @@ import hs.kr.entrydsm.user.domain.user.adapter.out.UserJpaEntity
 import hs.kr.entrydsm.user.domain.user.model.User
 import hs.kr.entrydsm.user.global.mapper.GenericMapper
 import org.mapstruct.Mapper
-import org.mapstruct.Mapping
 
 /**
  * User 도메인 모델과 UserJpaEntity 간의 변환을 담당하는 매퍼 클래스입니다.
@@ -12,8 +11,9 @@ import org.mapstruct.Mapping
  */
 @Mapper(componentModel = "spring")
 abstract class UserMapper : GenericMapper<UserJpaEntity, User> {
-    
     abstract override fun toEntity(model: User): UserJpaEntity
+
     abstract override fun toModel(entity: UserJpaEntity?): User?
+
     abstract override fun toModelNotNull(entity: UserJpaEntity): User
 }

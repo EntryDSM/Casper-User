@@ -7,6 +7,10 @@ import hs.kr.entrydsm.user.infrastructure.grpc.server.mapper.UserGrpcMapper
 import net.devh.boot.grpc.server.service.GrpcService
 import java.util.UUID
 
+/**
+ * Admin 관련 gRPC 서비스를 제공하는 클래스입니다.
+ * Admin 정보 조회 기능을 gRPC 프로토콜로 제공합니다.
+ */
 @GrpcService
 class AdminGrpcService(
     private val queryAdminByUUIDUseCase: QueryAdminByUUIDUseCase,

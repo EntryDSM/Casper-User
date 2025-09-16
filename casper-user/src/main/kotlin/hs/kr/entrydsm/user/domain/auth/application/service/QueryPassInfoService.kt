@@ -52,7 +52,7 @@ class QueryPassInfoService(
                 HashUtil.sha256(phoneNumber),
                 encryptionUtil.encrypt(phoneNumber),
                 encryptionUtil.encrypt(name),
-                exp
+                exp,
             )
 
         passInfoRepository.save(passInfo)

@@ -157,7 +157,9 @@ interface UserApiDocument {
      * 사용자 탈퇴를 처리합니다.
      */
     @SecurityRequirement(name = "bearerAuth")
-    fun withdrawal(@RequestBody @Valid request: WithdrawalRequest)
+    fun withdrawal(
+        @RequestBody @Valid request: WithdrawalRequest,
+    )
 
     /**
      * UUID로 사용자 정보를 조회합니다.

@@ -10,10 +10,6 @@ import java.util.UUID
  * Spring Data JPA를 통해 기본 CRUD 작업과 커스텀 쿼리를 제공합니다.
  */
 interface UserRepository : JpaRepository<UserJpaEntity, UUID> {
-
-
-
-
     /**
      * 전화번호로 사용자를 조회합니다.
      *

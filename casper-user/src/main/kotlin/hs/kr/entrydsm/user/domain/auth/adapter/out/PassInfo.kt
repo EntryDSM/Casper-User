@@ -3,7 +3,6 @@ package hs.kr.entrydsm.user.domain.auth.adapter.out
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.TimeToLive
-import org.springframework.data.redis.core.index.Indexed
 
 /**
  * Redis에 저장되는 Pass 인증 정보를 나타내는 클래스입니다.
@@ -20,5 +19,5 @@ class PassInfo(
     val phoneNumber: String,
     val name: String,
     @TimeToLive
-    val ttl: Long
+    val ttl: Long,
 )

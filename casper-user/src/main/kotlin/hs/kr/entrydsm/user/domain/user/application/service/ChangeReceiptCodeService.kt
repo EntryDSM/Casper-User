@@ -5,7 +5,6 @@ import hs.kr.entrydsm.user.domain.user.application.port.out.QueryUserPort
 import hs.kr.entrydsm.user.domain.user.application.port.out.SaveUserPort
 import hs.kr.entrydsm.user.domain.user.exception.UserNotFoundException
 import hs.kr.entrydsm.user.infrastructure.kafka.producer.UserEventProducer
-import jakarta.transaction.Synchronization
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.support.TransactionSynchronization
@@ -24,7 +23,7 @@ import java.util.UUID
 class ChangeReceiptCodeService(
     private val queryUserPort: QueryUserPort,
     private val saveUserPort: SaveUserPort,
-    private val userEventProducer: UserEventProducer
+    private val userEventProducer: UserEventProducer,
 ) : ChangeReceiptCodeUseCase {
     /**
      * 사용자의 접수코드를 변경합니다.
@@ -40,12 +39,12 @@ class ChangeReceiptCodeService(
     ) {
         try {
             val user = queryUserPort.findById(userId)
-            
+
             if (user == null) {
                 userEventProducer.sendReceiptCodeUpdateFailed(
                     receiptCode = receiptCode,
                     userId = userId,
-                    reason = "User not found"
+                    reason = "User not found",
                 )
                 throw UserNotFoundException
             }
@@ -53,23 +52,38 @@ class ChangeReceiptCodeService(
             val updatedUser = user.copy(receiptCode = receiptCode)
             saveUserPort.save(updatedUser)
 
-            TransactionSynchronizationManager.registerSynchronization(object : TransactionSynchronization {
-                override fun afterCommit() {
-                    userEventProducer.sendReceiptCodeUpdateCompleted(receiptCode, userId)
-                }
-            })
-
-            
+            registerAfterCommitCallback(receiptCode, userId)
         } catch (e: Exception) {
-
             if (e !is UserNotFoundException) {
                 userEventProducer.sendReceiptCodeUpdateFailed(
                     receiptCode = receiptCode,
                     userId = userId,
-                    reason = e.message ?: "Unknown error"
+                    reason = e.message ?: "Unknown error",
                 )
             }
-            throw e  // 예외 다시 던져서 롤백 발생
+            throw e // 예외 다시 던져서 롤백 발생
         }
+    }
+
+    /**
+     * 트랜잭션 커밋 후 접수코드 업데이트 완료 이벤트를 발행합니다.
+     *
+     * @param receiptCode 접수코드
+     * @param userId 사용자 ID
+     */
+    private fun registerAfterCommitCallback(
+        receiptCode: Long,
+        userId: UUID,
+    ) {
+        /**
+         * 트랜잭션 완료 후 콜백을 처리하는 객체입니다.
+         */
+        val callback =
+            object : TransactionSynchronization {
+                override fun afterCommit() {
+                    userEventProducer.sendReceiptCodeUpdateCompleted(receiptCode, userId)
+                }
+            }
+        TransactionSynchronizationManager.registerSynchronization(callback)
     }
 }

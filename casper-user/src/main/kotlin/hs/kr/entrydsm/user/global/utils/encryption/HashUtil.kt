@@ -10,7 +10,6 @@ import java.security.MessageDigest
  */
 @Component
 object HashUtil {
-    
     /**
      * 입력 문자열을 SHA-256 해시로 변환합니다.
      *
@@ -20,6 +19,6 @@ object HashUtil {
     fun sha256(input: String): String {
         return MessageDigest.getInstance("SHA-256")
             .digest(input.toByteArray())
-            .joinToString(""){ "%02x".format(it) }
+            .joinToString("") { "%02x".format(it) }
     }
 }
