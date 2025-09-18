@@ -18,6 +18,8 @@ RUN chmod +x gradlew && ./gradlew dependencies || true
 
 COPY ./ .
 
+RUN if [ -f "V61290000000_IDS_01_PROD_AES_license.dat" ]; then chmod 644 V61290000000_IDS_01_PROD_AES_license.dat; fi
+
 RUN chmod +x gradlew && ./gradlew bootJar -x test && \
     rm -rf .gradle /app/.gradle /root/.kotlin /tmp/* /var/tmp/* /tmp/kotlin-daemon*.log* 2>/dev/null || true
 
