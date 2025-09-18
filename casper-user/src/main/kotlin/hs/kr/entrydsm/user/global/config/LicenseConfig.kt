@@ -41,6 +41,7 @@ class LicenseConfig(
             )
             Files.setPosixFilePermissions(filePath, permissions)
         } catch (e: IOException) {
+            println("LICENSE DEBUG: 라이선스 파일 다운로드 실패 - 에러: ${e.message}")
             e.printStackTrace()
         } catch (e: UnsupportedOperationException) {
             // Windows 등 POSIX를 지원하지 않는 시스템에서는 권한 설정 무시
@@ -55,6 +56,6 @@ class LicenseConfig(
         /**
          * 라이센스 파일 저장 경로
          */
-        private const val PATH = "./V61290000000_IDS_01_PROD_AES_license.dat"
+        private const val PATH = "/tmp/V61290000000_IDS_01_PROD_AES_license.dat"
     }
 }
