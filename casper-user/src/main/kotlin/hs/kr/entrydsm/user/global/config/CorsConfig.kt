@@ -10,10 +10,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class CorsConfig : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/user/verify/**")
-            .allowedOrigins("http://localhost:4200")
-            .allowedMethods("GET", "POST", "OPTIONS")
+        registry.addMapping("/**")
+            .allowedOriginPatterns(
+                "http://localhost:4200",
+                "https://entry-admission-auth-dev.entrydsm.hs.kr",
+            )
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
             .allowedHeaders("*")
             .allowCredentials(true)
+            .maxAge(3600)
     }
 }
