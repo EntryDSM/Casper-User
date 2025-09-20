@@ -42,6 +42,7 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/user").permitAll()
                     .requestMatchers("/user/verify/popup").permitAll()
+                    .requestMatchers("/user/verify/callback").permitAll()
                     .requestMatchers(HttpMethod.GET, "/user/verify/info").permitAll()
                     .requestMatchers(HttpMethod.POST, "/user/auth").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/user/auth").permitAll()

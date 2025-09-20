@@ -6,6 +6,7 @@ import hs.kr.entrydsm.user.domain.auth.application.port.`in`.PassPopupUseCase
 import hs.kr.entrydsm.user.domain.auth.application.port.`in`.QueryPassInfoUseCase
 import hs.kr.entrydsm.user.global.document.auth.AuthApiDocument
 import jakarta.validation.Valid
+import org.springframework.core.io.ClassPathResource
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -37,4 +38,13 @@ class PassInfoController(
     override fun popupPass(
         @RequestBody request: @Valid PassPopupRequest,
     ): String = passPopupUseCase.generatePopup(request)
+
+    /**
+     * 패스 callback 화면을 반환합니다.
+     * */
+    @GetMapping("/callback")
+    fun passCallback(): String {
+        return ClassPathResource("templates/pass-callback.html")
+            .inputStream.bufferedReader().use { it.readText() }
+    }
 }
