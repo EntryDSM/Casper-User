@@ -30,14 +30,6 @@ class JwtFilter : OncePerRequestFilter() {
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val requestURI = request.requestURI
-
-        // PASS 인증 관련 경로는 JWT 검증 건너뛰기
-        if (requestURI.startsWith("/user/verify/")) {
-            filterChain.doFilter(request, response)
-            return
-        }
-
         val userId: String? = request.getHeader("Request-User-Id")
         val role: UserRole? = request.getHeader("Request-User-Role")?.let { UserRole.valueOf(it) }
 
