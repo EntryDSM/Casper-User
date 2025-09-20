@@ -13,7 +13,6 @@ class CorsConfig : WebMvcConfigurer {
         registry.addMapping("/**")
             .allowedOriginPatterns(
                 "http://localhost:4200",
-                "https://entry-admission-auth-dev.entrydsm.hs.kr",
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
             .allowedHeaders("*")
