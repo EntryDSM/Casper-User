@@ -19,7 +19,13 @@ class RedirectUrlChecker {
      * 리다이렉트 URL이 허용된 기본 URL로 시작하는지 확인합니다.
      */
     fun checkRedirectUrl(redirectUrl: String) {
-        if (!redirectUrl.startsWith(baseUrl)) {
+        val allowedUrls =
+            listOf(
+                "http://casper-user.entrydsm.hs.kr",
+                "http://localhost:4200",
+            )
+
+        if (!allowedUrls.any { redirectUrl.startsWith(it) }) {
             throw InvalidUrlException
         }
     }
