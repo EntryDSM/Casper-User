@@ -15,6 +15,10 @@ spring:
   profiles:
     active: ${SPRING_CLOUD_CONFIG_PROFILE}
 
+  redis:
+    host: entry-redis.entry-dsm-project.svc.cluster.local
+    port: 6379
+
 encrypt:
   key: ${ENCRYPT_KEY}
   salt: ${ENCRYPT_SALT}
