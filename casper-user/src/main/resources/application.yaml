@@ -16,7 +16,7 @@ spring:
     active: ${SPRING_CLOUD_CONFIG_PROFILE}
 
   redis:
-    host: entry-redis.entry-dsm-project.svc.cluster.local
+    host: entry-redis
     port: 6379
 
 encrypt:
