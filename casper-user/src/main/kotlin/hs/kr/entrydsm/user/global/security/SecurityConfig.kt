@@ -83,8 +83,9 @@ class SecurityConfig(
                 CorsConfiguration().apply {
                     allowedOriginPatterns =
                         listOf(
-                            "http://localhost:4200",
+                            "http://localhost:*",
                             "https://casper-user.entrydsm.hs.kr",
+                            "http://casper-user.entrydsm.hs.kr",
                         )
                     allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                     allowedHeaders = listOf("*")
