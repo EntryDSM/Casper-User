@@ -9,7 +9,6 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.nio.file.attribute.PosixFilePermission
-import java.nio.file.attribute.PosixFilePermissions
 
 /**
  * 패스 인증 라이센스 파일을 다운로드하고 설정하는 클래스입니다.
@@ -31,14 +30,15 @@ class LicenseConfig(
                 .use { inputStream ->
                     Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING)
                 }
-            
+
             // 파일 권한 설정 (읽기/쓰기 권한)
-            val permissions = setOf(
-                PosixFilePermission.OWNER_READ,
-                PosixFilePermission.OWNER_WRITE,
-                PosixFilePermission.GROUP_READ,
-                PosixFilePermission.OTHERS_READ
-            )
+            val permissions =
+                setOf(
+                    PosixFilePermission.OWNER_READ,
+                    PosixFilePermission.OWNER_WRITE,
+                    PosixFilePermission.GROUP_READ,
+                    PosixFilePermission.OTHERS_READ,
+                )
             Files.setPosixFilePermissions(filePath, permissions)
         } catch (e: IOException) {
             println("LICENSE DEBUG: 라이선스 파일 다운로드 실패 - 에러: ${e.message}")
