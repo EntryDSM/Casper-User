@@ -28,14 +28,14 @@ import java.util.UUID
 @Entity(name = "tbl_user")
 class UserJpaEntity(
     id: UUID?,
-    @Column(columnDefinition = "char(11)", nullable = false, unique = true)
+    @Column(columnDefinition = "varchar(255)", nullable = false, unique = true)
     @Convert(converter = EncryptedStringConverter::class)
     val phoneNumber: String,
     @Column(name = "phone_number_hash", columnDefinition = "varchar(64)", nullable = false, unique = true)
     val phoneNumberHash: String,
     @Column(columnDefinition = "char(60)", nullable = false)
     var password: String,
-    @Column(columnDefinition = "char(5)", nullable = false)
+    @Column(columnDefinition = "varchar(255)", nullable = false)
     @Convert(converter = EncryptedStringConverter::class)
     val name: String,
     @Column(columnDefinition = "bit(1) default 1", nullable = false)

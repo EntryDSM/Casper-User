@@ -33,7 +33,9 @@ class EncryptionUtil(
      */
     fun encrypt(plainText: String): String {
         val cipher = Cipher.getInstance(TRANSFORMATION)
-        val keySpec = SecretKeySpec(secretKey.toByteArray(), ALGORITHM)
+        // 키를 16바이트로 제한
+        val keyBytes = secretKey.toByteArray().take(16).toByteArray()
+        val keySpec = SecretKeySpec(keyBytes, ALGORITHM)
 
         val iv = ByteArray(IV_SIZE)
         SecureRandom().nextBytes(iv)
@@ -59,7 +61,9 @@ class EncryptionUtil(
         val encryptedBytes = combined.sliceArray(IV_SIZE until combined.size)
 
         val cipher = Cipher.getInstance(TRANSFORMATION)
-        val keySpec = SecretKeySpec(secretKey.toByteArray(), ALGORITHM)
+        // 키를 16바이트로 제한
+        val keyBytes = secretKey.toByteArray().take(16).toByteArray()
+        val keySpec = SecretKeySpec(keyBytes, ALGORITHM)
         val ivSpec = IvParameterSpec(iv)
 
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
