@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 /**
  * Spring Security 설정 클래스입니다.
@@ -30,7 +33,7 @@ class SecurityConfig(
     protected fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf { it.disable() }
-            .cors { }
+            .cors { it.configurationSource(corsConfigurationSource()) }
             .formLogin { it.disable() }
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -68,4 +71,21 @@ class SecurityConfig(
      */
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()
+
+    /**
+     * cors 설정 메서드입니다.
+     */
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+
+        configuration.allowedOriginPatterns = listOf("*") // 모든 Origin 허용
+        configuration.allowedMethods = listOf("*") // 모든 메서드 허용
+        configuration.allowedHeaders = listOf("*") // 모든 헤더 허용
+        configuration.allowCredentials = true // 쿠키/Authorization 같이 보내기 허용
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+    }
 }
