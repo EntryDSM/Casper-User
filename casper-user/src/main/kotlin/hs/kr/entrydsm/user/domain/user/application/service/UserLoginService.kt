@@ -45,15 +45,36 @@ class UserLoginService(
      */
     @Transactional
     override fun login(request: UserLoginRequest): TokenResponse {
-        val user = queryUserPort.findByPhoneNumber(request.phoneNumber) ?: throw UserNotFoundException
-
-        if (!user.isActive) {
+        println("=== 로그인 디버깅 시작 ===")
+        println("요청 전화번호: ${request.phoneNumber}")
+        println("요청 비밀번호: ${request.password}")
+        
+        val user = queryUserPort.findByPhoneNumber(request.phoneNumber)
+        println("DB에서 조회된 사용자: $user")
+        
+        if (user == null) {
+            println("사용자를 찾을 수 없음!")
+            throw UserNotFoundException
+        }
+        
+        println("사용자 활성 상태: ${user.active}")
+        if (!user.active) {
+            println("비활성 사용자!")
             throw UserNotFoundException
         }
 
-        if (!passwordEncoder.matches(request.password, user.password)) {
+        println("비밀번호 검증 시작...")
+        val passwordMatches = passwordEncoder.matches(request.password, user.password)
+        println("비밀번호 일치 여부: $passwordMatches")
+        println("저장된 비밀번호 해시: ${user.password}")
+        
+        if (!passwordMatches) {
+            println("비밀번호 불일치!")
             throw PasswordNotValidException
         }
+        
+        println("로그인 성공, 토큰 생성 중...")
+        println("=== 로그인 디버깅 끝 ===")
 
         refreshTokenRepository.deleteById(user.id.toString())
 

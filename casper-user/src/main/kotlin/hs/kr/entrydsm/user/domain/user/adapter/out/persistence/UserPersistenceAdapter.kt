@@ -44,9 +44,19 @@ class UserPersistenceAdapter(
      * @return 조회된 사용자 도메인 모델 (없으면 null)
      */
     override fun findByPhoneNumber(phoneNumber: String): User? {
+        println("=== UserPersistenceAdapter 디버깅 ===")
+        println("검색할 전화번호: $phoneNumber")
         val phoneNumberHash = HashUtil.sha256(phoneNumber)
-        return userRepository.findByPhoneNumberHash(phoneNumberHash)
-            ?.let { userMapper.toModel(it) }
+        println("생성된 해시: $phoneNumberHash")
+        
+        val entity = userRepository.findByPhoneNumberHash(phoneNumberHash)
+        println("DB에서 찾은 엔티티: $entity")
+        
+        val result = entity?.let { userMapper.toModel(it) }
+        println("변환된 도메인 모델: $result")
+        println("=== UserPersistenceAdapter 디버깅 끝 ===")
+        
+        return result
     }
 
     /**
@@ -97,7 +107,7 @@ class UserPersistenceAdapter(
      */
     override fun findWithdrawnUsersOlderThan(days: Long): List<User> {
         val cutoffDate = LocalDateTime.now().minusDays(days)
-        return userRepository.findAllByIsActiveFalseAndWithdrawalAtBefore(cutoffDate)
+        return userRepository.findAllByActiveFalseAndWithdrawalAtBefore(cutoffDate)
             .map { userMapper.toModelNotNull(it) }
     }
 }

@@ -35,7 +35,7 @@ class UserReactivationService(
             queryUserPort.findByPhoneNumber(request.phoneNumber)
                 ?: throw UserNotFoundException
 
-        if (existingUser.isActive) {
+        if (existingUser.active) {
             throw UserAlreadyExistsException
         }
 

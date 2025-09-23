@@ -29,7 +29,7 @@ data class User(
     val isParent: Boolean,
     val receiptCode: Long?,
     val role: UserRole,
-    val isActive: Boolean = true,
+    val active: Boolean = true,
     val withdrawalAt: LocalDateTime? = null,
 ) {
     /**
@@ -60,7 +60,7 @@ data class User(
      */
     fun withdraw(): User {
         return copy(
-            isActive = false,
+            active = false,
             withdrawalAt = LocalDateTime.now(),
         )
     }
@@ -73,7 +73,7 @@ data class User(
      */
     fun reactivate(): User {
         return copy(
-            isActive = true,
+            active = true,
             withdrawalAt = null,
         )
     }

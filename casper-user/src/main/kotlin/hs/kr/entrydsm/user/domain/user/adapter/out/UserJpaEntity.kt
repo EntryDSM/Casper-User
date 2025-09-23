@@ -31,9 +31,9 @@ class UserJpaEntity(
     @Column(columnDefinition = "varchar(255)", nullable = false, unique = true)
     @Convert(converter = EncryptedStringConverter::class)
     val phoneNumber: String,
-    @Column(name = "phone_number_hash", columnDefinition = "varchar(64)", nullable = false, unique = true)
+    @Column(name = "phone_number_hash", columnDefinition = "varchar(255)", nullable = false, unique = true)
     val phoneNumberHash: String,
-    @Column(columnDefinition = "char(60)", nullable = false)
+    @Column(columnDefinition = "varchar(255)", nullable = false)
     var password: String,
     @Column(columnDefinition = "varchar(255)", nullable = false)
     @Convert(converter = EncryptedStringConverter::class)
@@ -45,8 +45,8 @@ class UserJpaEntity(
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     val role: UserRole,
-    @Column(name = "is_active", columnDefinition = "bit(1) default 1", nullable = false)
-    var isActive: Boolean = true,
+    @Column(name = "active", columnDefinition = "tinyint(1) default 1", nullable = false)
+    var active: Boolean = true,
     @Column(name = "withdrawal_at", nullable = true)
     var withdrawalAt: LocalDateTime? = null,
 ) : BaseUUIDEntity(id)

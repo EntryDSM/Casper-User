@@ -39,5 +39,5 @@ interface UserRepository : JpaRepository<UserJpaEntity, UUID> {
      * @param cutoffDate 기준 일시
      * @return 삭제 대상 사용자 엔티티 목록
      */
-    fun findAllByIsActiveFalseAndWithdrawalAtBefore(cutoffDate: LocalDateTime): List<UserJpaEntity>
+    fun findAllByActiveFalseAndWithdrawalAtBefore(cutoffDate: LocalDateTime): List<UserJpaEntity>
 }
