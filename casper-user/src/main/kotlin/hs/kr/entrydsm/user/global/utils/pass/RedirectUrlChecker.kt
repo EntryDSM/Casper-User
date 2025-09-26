@@ -21,7 +21,7 @@ class RedirectUrlChecker {
     fun checkRedirectUrl(redirectUrl: String) {
         val allowedUrls =
             listOf(
-                "http://casper-user.entrydsm.hs.kr",
+                "https://auth.entrydsm.kr",
                 "http://localhost:4200",
             )
 
