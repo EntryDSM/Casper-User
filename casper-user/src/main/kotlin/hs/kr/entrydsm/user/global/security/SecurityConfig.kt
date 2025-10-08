@@ -50,6 +50,7 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.POST, "/user/auth").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/user/auth").permitAll()
                     .requestMatchers(HttpMethod.POST, "/admin/auth").permitAll()
+                    .requestMatchers(HttpMethod.PUT, "/admin/auth").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/swagger-resources/**").permitAll()
