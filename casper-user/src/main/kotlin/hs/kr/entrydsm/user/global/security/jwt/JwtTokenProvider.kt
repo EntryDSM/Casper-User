@@ -98,7 +98,7 @@ class JwtTokenProvider(
         refreshTokenRepository.findByToken(refreshToken)
             ?.let { token ->
                 val id = token.id
-                val role = getRole(token.token)
+                val role = getRole(refreshToken)
 
                 val tokenResponse = generateToken(id, role)
                 token.update(tokenResponse.refreshToken, jwtProperties.refreshExp)
