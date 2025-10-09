@@ -23,6 +23,7 @@ class RedirectUrlChecker {
             listOf(
                 "https://auth.entrydsm.kr",
                 "http://localhost:4200",
+                "https://entrydsm.kr"
             )
 
         if (!allowedUrls.any { redirectUrl.startsWith(it) }) {
