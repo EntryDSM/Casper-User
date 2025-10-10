@@ -84,7 +84,7 @@ class KafkaProducerConfig(
     /**
      * Kafka Producer의 기본 설정을 구성합니다.
      *
-     * Confluent Cloud 연결을 위한 SASL 보안 설정과 직렬화 설정을 포함합니다.
+     * 직렬화 설정을 포함하며, 타입 정보를 헤더에 포함하지 않도록 설정합니다.
      *
      * @return Producer 설정 맵
      */
@@ -93,6 +93,7 @@ class KafkaProducerConfig(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to kafkaProperty.serverAddress,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java,
+            JsonSerializer.ADD_TYPE_INFO_HEADERS to false,
         )
     }
 }
