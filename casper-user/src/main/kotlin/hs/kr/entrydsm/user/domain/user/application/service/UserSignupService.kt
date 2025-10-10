@@ -51,10 +51,26 @@ class UserSignupService(
         val phoneNumber = request.phoneNumber
         val phoneNumberHash = HashUtil.sha256(phoneNumber)
 
-        if (queryUserPort.existsByPhoneNumber(phoneNumber)) {
+        val existingUser = queryUserPort.findByPhoneNumber(phoneNumber)
+
+        if (existingUser != null && existingUser.active) {
             throw UserAlreadyExistsException
         }
 
+        if (existingUser != null && !existingUser.active) {
+            val reactivatedUser =
+                existingUser.reactivate()
+                    .changePassword(passwordEncoder.encode(request.password))
+
+            val savedUser = saveUserPort.save(reactivatedUser)
+
+            return tokenProvider.generateToken(
+                savedUser.id.toString(),
+                savedUser.role.toString(),
+            )
+        }
+
+        // 새로운 사용자 생성
         val passInfo =
             passInfoRepository.findById(phoneNumberHash)
                 .orElseThrow { PassInfoNotFoundException }

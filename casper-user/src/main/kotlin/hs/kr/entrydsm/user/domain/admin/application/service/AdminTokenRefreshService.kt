@@ -24,15 +24,16 @@ class AdminTokenRefreshService(
     @Transactional
     override fun refresh(refreshToken: String): TokenResponse {
         val tokenResponse = jwtTokenProvider.reIssue(refreshToken)
-        
-        val userInfo = UserInfo(
-            token = tokenResponse.accessToken,
-            userId = jwtTokenProvider.getSubjectWithExpiredCheck(tokenResponse.accessToken),
-            userRole = jwtTokenProvider.getRole(tokenResponse.accessToken),
-            ttl = jwtProperties.accessExp,
-        )
+
+        val userInfo =
+            UserInfo(
+                token = tokenResponse.accessToken,
+                userId = jwtTokenProvider.getSubjectWithExpiredCheck(tokenResponse.accessToken),
+                userRole = jwtTokenProvider.getRole(tokenResponse.accessToken),
+                ttl = jwtProperties.accessExp,
+            )
         userInfoRepository.save(userInfo)
-        
+
         return tokenResponse
     }
 }
