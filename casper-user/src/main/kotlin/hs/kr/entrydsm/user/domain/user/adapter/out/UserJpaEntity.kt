@@ -38,7 +38,7 @@ class UserJpaEntity(
     @Column(columnDefinition = "varchar(255)", nullable = false)
     @Convert(converter = EncryptedStringConverter::class)
     val name: String,
-    @Column(columnDefinition = "bit(1) default 1", nullable = false)
+    @Column(name = "is_parent", columnDefinition = "bit(1) default 1", nullable = false)
     val isParent: Boolean,
     @Column(name = "receipt_code", nullable = true)
     var receiptCode: Long?,
