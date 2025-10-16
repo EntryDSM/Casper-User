@@ -59,7 +59,7 @@ class UserSignupService(
 
         if (existingUser != null && !existingUser.active) {
             val reactivatedUser =
-                existingUser.reactivate()
+                existingUser.reactivate(request.isParent)
                     .changePassword(passwordEncoder.encode(request.password))
 
             val savedUser = saveUserPort.save(reactivatedUser)

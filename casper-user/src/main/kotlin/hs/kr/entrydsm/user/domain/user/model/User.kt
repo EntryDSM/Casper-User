@@ -69,12 +69,14 @@ data class User(
      * 탈퇴한 계정을 재활성화합니다.
      * 계정을 활성화하고 탈퇴 일시를 초기화합니다.
      *
+     * @param isParent 학부모 여부 (null이면 기존 값 유지)
      * @return 재활성화된 User 인스턴스
      */
-    fun reactivate(): User {
+    fun reactivate(isParent: Boolean? = null): User {
         return copy(
             active = true,
             withdrawalAt = null,
+            isParent = isParent ?: this.isParent,
         )
     }
 }
