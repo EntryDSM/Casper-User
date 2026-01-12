@@ -22,7 +22,8 @@ class CreateApplicationConsumer(
         containerFactory = "kafkaListenerContainerFactory",
     )
     fun execute(message: String) {
-        val createApplicationEvent = mapper.readValue(message, CreateApplicationEvent::class.java)
+        val jsonData = mapper.readValue(message, String::class.java)
+        val createApplicationEvent = mapper.readValue(jsonData, CreateApplicationEvent::class.java)
         changeReceiptCodeUseCase.changeReceiptCode(createApplicationEvent.userId, createApplicationEvent.receiptCode)
     }
 }
