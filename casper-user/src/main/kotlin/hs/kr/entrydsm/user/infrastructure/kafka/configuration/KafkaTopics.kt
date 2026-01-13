@@ -39,4 +39,6 @@ object KafkaTopics {
      * 원서 서비스에서 이 이벤트를 수신하면 보상 트랜잭션을 수행함
      */
     const val USER_RECEIPT_CODE_UPDATE_FAILED = "user-receipt-code-update-failed"
+
+    const val CANCEL_SUBMITTED_APPLICATION = "cancel-submitted-application"
 }
