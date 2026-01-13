@@ -40,4 +40,6 @@ interface UserRepository : JpaRepository<UserJpaEntity, UUID> {
      * @return 삭제 대상 사용자 엔티티 목록
      */
     fun findAllByActiveFalseAndWithdrawalAtBefore(cutoffDate: LocalDateTime): List<UserJpaEntity>
+
+    fun findByReceiptCode(receiptCode: Long): UserJpaEntity?
 }

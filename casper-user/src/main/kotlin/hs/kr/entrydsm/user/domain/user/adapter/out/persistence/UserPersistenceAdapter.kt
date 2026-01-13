@@ -36,6 +36,11 @@ class UserPersistenceAdapter(
             ?.let { userMapper.toModel(it) }
     }
 
+    override fun findByReceiptCode(receiptCode: Long): User? {
+        return userRepository.findByReceiptCode(receiptCode)
+            ?.let { userMapper.toModel(it) }
+    }
+
     /**
      * 전화번호로 사용자를 조회합니다.
      * 전화번호를 암호화하여 데이터베이스에서 조회합니다.

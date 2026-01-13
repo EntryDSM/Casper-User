@@ -31,4 +31,6 @@ interface QueryUserPort {
      * @return 사용자 존재 여부
      */
     fun existsByPhoneNumber(phoneNumber: String): Boolean
+
+    fun findByReceiptCode(receiptCode: Long): User?
 }
