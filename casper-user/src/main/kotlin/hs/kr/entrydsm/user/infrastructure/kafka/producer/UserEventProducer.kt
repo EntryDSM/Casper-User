@@ -1,7 +1,5 @@
 package hs.kr.entrydsm.user.infrastructure.kafka.producer
 
-import java.util.UUID
-
 /**
  * 사용자 이벤트를 발행하는 Producer 인터페이스입니다.
  *
