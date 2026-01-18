@@ -7,17 +7,17 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 
 @Component
-class CancelApplicationConsumer(
+class CreateStatusConsumer(
     private val mapper: ObjectMapper,
     private val deleteReceiptCodeUseCase: DeleteReceiptCodeUseCase
 ) {
 
     @KafkaListener(
-        topics = [KafkaTopics.CANCEL_SUBMITTED_APPLICATION],
+        topics = [KafkaTopics.APPLICATION_STATUS_CREATE_FAILED],
         groupId = "delete-receipt-code",
         containerFactory = "kafkaListenerContainerFactory",
     )
-    fun execute(message: String) {
+    fun applicationStatusCreateFailed(message: String) {
         val receiptCode = mapper.readValue(message, Long::class.java)
         deleteReceiptCodeUseCase.deleteReceiptCode(receiptCode)
     }

@@ -43,8 +43,6 @@ class ChangeReceiptCodeService(
             if (user == null) {
                 userEventProducer.sendReceiptCodeUpdateFailed(
                     receiptCode = receiptCode,
-                    userId = userId,
-                    reason = "User not found",
                 )
                 throw UserNotFoundException
             }
@@ -52,13 +50,11 @@ class ChangeReceiptCodeService(
             val updatedUser = user.copy(receiptCode = receiptCode)
             saveUserPort.save(updatedUser)
 
-            registerAfterCommitCallback(receiptCode, userId)
+            registerAfterCommitCallback(receiptCode)
         } catch (e: Exception) {
             if (e !is UserNotFoundException) {
                 userEventProducer.sendReceiptCodeUpdateFailed(
                     receiptCode = receiptCode,
-                    userId = userId,
-                    reason = e.message ?: "Unknown error",
                 )
             }
             throw e // 예외 다시 던져서 롤백 발생
@@ -69,11 +65,9 @@ class ChangeReceiptCodeService(
      * 트랜잭션 커밋 후 접수코드 업데이트 완료 이벤트를 발행합니다.
      *
      * @param receiptCode 접수코드
-     * @param userId 사용자 ID
      */
     private fun registerAfterCommitCallback(
         receiptCode: Long,
-        userId: UUID,
     ) {
         /**
          * 트랜잭션 완료 후 콜백을 처리하는 객체입니다.
@@ -81,7 +75,7 @@ class ChangeReceiptCodeService(
         val callback =
             object : TransactionSynchronization {
                 override fun afterCommit() {
-                    userEventProducer.sendReceiptCodeUpdateCompleted(receiptCode, userId)
+                    userEventProducer.sendReceiptCodeUpdateCompleted(receiptCode)
                 }
             }
         TransactionSynchronizationManager.registerSynchronization(callback)
