@@ -14,7 +14,7 @@ class CancelApplicationConsumer(
 
     @KafkaListener(
         topics = [KafkaTopics.CANCEL_SUBMITTED_APPLICATION],
-        groupId = "update-user",
+        groupId = "delete-receipt-code",
         containerFactory = "kafkaListenerContainerFactory",
     )
     fun execute(message: String) {
