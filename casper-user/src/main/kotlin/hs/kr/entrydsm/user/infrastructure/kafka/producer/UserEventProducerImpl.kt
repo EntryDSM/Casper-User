@@ -1,11 +1,8 @@
 package hs.kr.entrydsm.user.infrastructure.kafka.producer
 
 import hs.kr.entrydsm.user.infrastructure.kafka.configuration.KafkaTopics
-import hs.kr.entrydsm.user.infrastructure.kafka.consumer.dto.UserReceiptCodeUpdateCompletedEvent
-import hs.kr.entrydsm.user.infrastructure.kafka.consumer.dto.UserReceiptCodeUpdateFailedEvent
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 /**
  * 사용자 이벤트를 발행하는 Producer 구현체입니다.
@@ -20,16 +17,11 @@ class UserEventProducerImpl(
     private val userEventKafkaTemplate: KafkaTemplate<String, Any>,
 ) : UserEventProducer {
 
-    override fun sendReceiptCodeUpdateCompleted(
-        receiptCode: Long,
-    ) {
+    override fun sendReceiptCodeUpdateCompleted(receiptCode: Long) {
         userEventKafkaTemplate.send(KafkaTopics.USER_RECEIPT_CODE_UPDATE_COMPLETED, receiptCode)
     }
 
-
-    override fun sendReceiptCodeUpdateFailed(
-        receiptCode: Long
-    ) {
+    override fun sendReceiptCodeUpdateFailed(receiptCode: Long) {
         userEventKafkaTemplate.send(KafkaTopics.USER_RECEIPT_CODE_UPDATE_FAILED, receiptCode)
     }
 }
