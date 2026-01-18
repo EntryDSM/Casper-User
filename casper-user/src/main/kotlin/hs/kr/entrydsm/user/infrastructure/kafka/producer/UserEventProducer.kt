@@ -13,23 +13,17 @@ interface UserEventProducer {
      * 접수번호 업데이트 완료 이벤트를 발행합니다.
      *
      * @param receiptCode 업데이트된 접수번호
-     * @param userId 사용자 ID
      */
     fun sendReceiptCodeUpdateCompleted(
         receiptCode: Long,
-        userId: UUID,
     )
 
     /**
      * 접수번호 업데이트 실패 이벤트를 발행합니다.
      *
      * @param receiptCode 업데이트 실패한 접수번호
-     * @param userId 사용자 ID
-     * @param reason 실패 사유
      */
     fun sendReceiptCodeUpdateFailed(
         receiptCode: Long,
-        userId: UUID,
-        reason: String,
     )
 }
